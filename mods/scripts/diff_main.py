@@ -1,5 +1,7 @@
+from mods.cli.gendiff_discription import get_gendiff_help
+
 def main():
-    print('hah')
+    get_gendiff_help()
 
 
 if __name__ == '__main__':
