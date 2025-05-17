@@ -5,9 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 
-dependencies = [
-    "prompt>=0.4.1",
-]
+dependencies = []
 
 [build-system]
 requires = ["hatchling"]
@@ -23,4 +21,4 @@ dev = [
     "ruff>=0.9.7",
 ]
 [project.scripts]
-gendiff = "mods.scripts.diff_main:main"
+gendiff = "gendiff.scripts.gendiff_main:main"
