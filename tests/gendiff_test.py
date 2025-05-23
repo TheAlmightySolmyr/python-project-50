@@ -1,6 +1,6 @@
 import os
 
-from gendiff.gendiff_discription import generate_diff
+from gendiff.gendiff_description import generate_diff
 
 
 def test_generate_diff():
