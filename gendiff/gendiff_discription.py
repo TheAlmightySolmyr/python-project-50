@@ -2,6 +2,7 @@ import argparse
 import json
 
 DESCRIPTION = 'Compares two configuration files and shows a difference.'
+HELP_DESCR = 'set format of output'
 
 
 def generate_diff(file1, file2):
@@ -30,7 +31,7 @@ def get_gendiff():
     prsr = argparse.ArgumentParser(description=DESCRIPTION)
     prsr.add_argument('first_file', help='path to the first file')
     prsr.add_argument('second_file', help='path to the second file')
-    prsr.add_argument('-f', '--format', help='set format of output', default='text')
+    prsr.add_argument('-f', '--format', help=HELP_DESCR, default='text')
     args = prsr.parse_args()
     diff = generate_diff(args.first_file, args.second_file)
     print(diff)
