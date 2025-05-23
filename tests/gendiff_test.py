@@ -1,5 +1,7 @@
 import os
+
 from gendiff.gendiff_discription import generate_diff
+
 
 def test_generate_diff():
     file1_path = os.path.join(os.path.dirname(__file__), 'test_data/ff1.json')

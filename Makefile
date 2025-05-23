@@ -10,7 +10,5 @@ lint:
 lint_fix:
 	uv run ruff check --fix
 
-check: test lint
-
 build:
 	uv build
