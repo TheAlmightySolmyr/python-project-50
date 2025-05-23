@@ -26,7 +26,7 @@ def generate_diff(file1, file2):
     return "{\n" + "\n".join(diff) + "\n}"
 
 
-def get_gendiff_help():
+def get_gendiff():
     prsr = argparse.ArgumentParser(description=DESCRIPTION)
     prsr.add_argument('first_file', help='path to the first file')
     prsr.add_argument('second_file', help='path to the second file')
