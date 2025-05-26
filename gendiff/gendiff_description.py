@@ -1,14 +1,27 @@
 import argparse
 import json
 
+from yaml import safe_load
+
 DESCRIPTION = 'Compares two configuration files and shows a difference.'
 HELP_DESCR = 'set format of output'
+ERROR = 'Unsupported file format'
+
+
+def parse_file_type(file_path):
+    if file_path.endswith('.json'):
+        with open(file_path, 'r') as f:
+            return json.load(f)
+    elif file_path.endswith(('.yml', '.yaml')):
+        with open(file_path, 'r') as f:
+            return safe_load(f)
+    else:
+        raise ValueError(f'{ERROR}: {file_path}')
 
 
 def generate_diff(file1, file2):
-    with open(file1, 'r') as f1, open(file2, 'r') as f2:
-        data1 = json.load(f1)
-        data2 = json.load(f2)
+    data1 = parse_file_type(file1)
+    data2 = parse_file_type(file2)
 
     keys = sorted(set(data1.keys()).union(set(data2.keys())))
 
