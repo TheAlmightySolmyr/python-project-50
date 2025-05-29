@@ -2,6 +2,7 @@ import argparse
 import json
 from pathlib import Path
 
+from plain import format_plain
 from yaml import safe_load
 
 from gendiff.diff_tree_builder import build_diff_tree
@@ -34,6 +35,8 @@ def generate_diff(file1, file2, format_name='stylish'):
 
     if format_name == 'stylish':
         return f'{{\n{format_stylish(diff_tree)}\n}}'
+    elif format_name == 'plain':
+        return format_plain(diff_tree)
     else:
         raise ValueError(f'{ERROR}: {format_name}')
 
