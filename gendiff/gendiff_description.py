@@ -1,5 +1,6 @@
 import argparse
 import json
+from pathlib import Path
 
 from yaml import safe_load
 
@@ -12,10 +13,13 @@ ERROR = 'Unsupported file format'
 
 
 def parse_file_type(file_path):
-    if file_path.endswith('.json'):
+    file_path = Path(file_path)
+    if not file_path.exists():
+        raise FileNotFoundError(f"File not found: {file_path}")
+    if file_path.suffix == '.json':
         with open(file_path, 'r') as f:
             return json.load(f)
-    elif file_path.endswith(('.yml', '.yaml')):
+    elif file_path.suffix in ('.yml', '.yaml'):
         with open(file_path, 'r') as f:
             return safe_load(f)
     else:

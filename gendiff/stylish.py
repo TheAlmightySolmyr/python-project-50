@@ -1,21 +1,36 @@
-def format_stylish(diff_tree, depth=0):
-    indent = '    '
+def form_val(value, dpth):
+    if isinstance(value, dict):
+        ind = '    '
+        lines = []
+        for key, val in value.items():
+            lines.append(f"{ind * (dpth + 1)}{key}: {form_val(val, dpth + 1)}")
+        return "{\n" + "\n".join(lines) + "\n" + ind * dpth + "}"
+    elif isinstance(value, bool):
+        return str(value).lower()
+    elif value is None:
+        return 'null'
+    else:
+        return str(value)
+
+
+def format_stylish(diff_tree, dpth=0):
+    ind = '    '
     lines = []
 
-    for node in diff_tree:
-        if node.type == 'added':
-            lines.append(f"{indent * depth}+ {node.key}: {node.value}")
-        elif node.type == 'removed':
-            lines.append(f"{indent * depth}- {node.key}: {node.value}")
-        elif node.type == 'changed':
-            old_value, new_value = node.value
-            lines.append(f"{indent * depth}- {node.key}: {old_value}")
-            lines.append(f"{indent * depth}+ {node.key}: {new_value}")
-        elif node.type == 'unchanged':
-            lines.append(f"{indent * depth}  {node.key}: {node.value}")
-        elif node.type == 'nested':
-            lines.append(f"{indent * depth}  {node.key}: {{")
-            lines.append(format_stylish(node.children, depth + 1))
-            lines.append(f"{indent * depth}  }}")
+    for n in diff_tree:
+        if n.type == 'added':
+            lines.append(f"{ind * dpth}+ {n.key}: {form_val(n.value, dpth)}")
+        elif n.type == 'removed':
+            lines.append(f"{ind * dpth}- {n.key}: {form_val(n.value, dpth)}")
+        elif n.type == 'changed':
+            ol_val, new_val = n.value
+            lines.append(f"{ind * dpth}- {n.key}: {form_val(ol_val, dpth)}")
+            lines.append(f"{ind * dpth}+ {n.key}: {form_val(new_val, dpth)}")
+        elif n.type == 'unchanged':
+            lines.append(f"{ind * dpth}  {n.key}: {form_val(n.value, dpth)}")
+        elif n.type == 'nested':
+            lines.append(f"{ind * dpth}  {n.key}: {{")
+            lines.append(format_stylish(n.children, dpth + 1))
+            lines.append(f"{ind * dpth}  }}")
 
     return '\n'.join(lines)
