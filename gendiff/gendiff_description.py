@@ -1,31 +1,13 @@
 import argparse
-import json
-from pathlib import Path
-
-from plain import format_plain
-from yaml import safe_load
 
 from gendiff.diff_tree_builder import build_diff_tree
-from gendiff.form_json import format_json
-from gendiff.stylish import format_stylish
+from gendiff.formatters.form_json import format_json
+from gendiff.formatters.plain import format_plain
+from gendiff.formatters.stylish import format_stylish
+from gendiff.parsers import parse_file_type
 
 DESCRIPTION = 'Compares two configuration files and shows a difference.'
 HELP_DESCR = 'set format of output'
-ERROR = 'Unsupported file format'
-
-
-def parse_file_type(file_path):
-    file_path = Path(file_path)
-    if not file_path.exists():
-        raise FileNotFoundError(f"File not found: {file_path}")
-    if file_path.suffix == '.json':
-        with open(file_path, 'r') as f:
-            return json.load(f)
-    elif file_path.suffix in ('.yml', '.yaml'):
-        with open(file_path, 'r') as f:
-            return safe_load(f)
-    else:
-        raise ValueError(f'{ERROR}: {file_path}')
 
 
 def generate_diff(file1, file2, format_name='stylish'):
@@ -44,7 +26,7 @@ def generate_diff(file1, file2, format_name='stylish'):
     elif format_name == 'json':
         return format_json(diff_tree)
     else:
-        raise ValueError(f"{ERROR}: {format_name}")
+        raise ValueError(f"Unsupported file format: {format_name}")
 
 
 def get_gendiff():
