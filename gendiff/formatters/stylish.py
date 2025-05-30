@@ -9,6 +9,8 @@ def form_val(value, dpth):
         return str(value).lower()
     elif value is None:
         return 'null'
+    elif isinstance(value, str):
+        return f"'{value}'"
     else:
         return str(value)
 
