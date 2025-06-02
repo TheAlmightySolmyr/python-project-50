@@ -6,28 +6,28 @@ T = ' to '
 
 
 def format_plain(diff_tree, path=""):
-    lns = []
+    lines = []
 
-    for n in diff_tree:
-        pth = f"{path}.{n.key}" if path else n.key
+    for node in diff_tree:
+        current_path = f"{path}.{node.key}" if path else node.key
 
-        if n.type == 'added':
-            if isinstance(n.value, dict):
-                lns.append(f"{P} '{pth}' {ADDED} {CV}")
+        if node.type == 'added':
+            if isinstance(node.value, dict):
+                lines.append(f"{P} '{current_path}' {ADDED} {CV}")
             else:
-                lns.append(f"{P} '{pth}' {ADDED} {frm_v(n.value)}")
-        elif n.type == 'removed':
-            lns.append(f"{P} '{pth}' was removed")
-        elif n.type == 'changed':
-            ol_v, n_v = n.value
-            if isinstance(ol_v, dict) or isinstance(n_v, dict):
-                lns.append(f"{P} '{pth}' {FROM} {CV} to {CV}")
+                lines.append(f"{P} '{current_path}' {ADDED} {frm_v(node.value)}")
+        elif node.type == 'removed':
+            lines.append(f"{P} '{current_path}' was removed")
+        elif node.type == 'changed':
+            old_val, new_val = node.value
+            if isinstance(old_val, dict) or isinstance(new_val, dict):
+                lines.append(f"{P} '{current_path}' {FROM} {CV}{T}{CV}")
             else:
-                lns.append(f"{P} '{pth}' {FROM} {frm_v(ol_v)}{T}{frm_v(n_v)}")
-        elif n.type == 'nested':
-            lns.append(format_plain(n.children, pth))
+                lines.append(f"{P} '{current_path}' {FROM} {frm_v(old_val)}{T}{frm_v(new_val)}")
+        elif node.type == 'nested':
+            lines.append(format_plain(node.children, current_path))
 
-    return '\n'.join(lns)
+    return '\n'.join(lines)
 
 
 def frm_v(value):
