@@ -20,7 +20,7 @@ def generate_diff(file1, file2, format_name='stylish'):
     diff_tree = build_diff_tree(data1, data2)
 
     if format_name == 'stylish':
-        return f"{{\n{format_stylish(diff_tree)}\n}}"
+        return format_stylish(diff_tree)
     elif format_name == 'plain':
         return format_plain(diff_tree)
     elif format_name == 'json':
