@@ -1,10 +1,10 @@
 def form_val(value, depth):
     if isinstance(value, dict):
-        indent = '    '
+        indent = '    ' * (depth + 1)
         lines = []
         for key, val in value.items():
-            lines.append(f"{indent * (depth + 1)}{key}: {form_val(val, depth + 1)}")
-        return "{\n" + "\n".join(lines) + "\n" + indent * depth + "}"
+            lines.append(f"{indent}{key}: {form_val(val, depth + 1)}")
+        return '{\n' + '\n'.join(lines) + '\n' + '    ' * depth + '}'
     elif isinstance(value, bool):
         return str(value).lower()
     elif value is None:
@@ -14,23 +14,23 @@ def form_val(value, depth):
 
 
 def format_stylish(diff_tree, depth=0):
-    indent = '    '
+    indent = '    ' * depth
     lines = []
 
     for node in diff_tree:
-        if node.type == 'added':
-            lines.append(f"{indent * depth}+ {node.key}: {form_val(node.value, depth)}")
-        elif node.type == 'removed':
-            lines.append(f"{indent * depth}- {node.key}: {form_val(node.value, depth)}")
-        elif node.type == 'changed':
-            old_val, new_val = node.value
-            lines.append(f"{indent * depth}- {node.key}: {form_val(old_val, depth)}")
-            lines.append(f"{indent * depth}+ {node.key}: {form_val(new_val, depth)}")
-        elif node.type == 'unchanged':
-            lines.append(f"{indent * depth}  {node.key}: {form_val(node.value, depth)}")
-        elif node.type == 'nested':
-            lines.append(f"{indent * depth}  {node.key}: {{")
-            lines.append(format_stylish(node.children, depth + 1))
-            lines.append(f"{indent * depth}  }}")
-
-    return '\n'.join(lines)
+        key = node['key']
+        node_type = node['type']
+        
+        if node_type == 'nested':
+            lines.append(f"{indent}    {key}: {format_stylish(node['children'], depth + 1)}")
+        elif node_type == 'changed':
+            lines.append(f"{indent}  - {key}: {form_val(node['old_value'], depth + 1)}")
+            lines.append(f"{indent}  + {key}: {form_val(node['new_value'], depth + 1)}")
+        elif node_type == 'added':
+            lines.append(f"{indent}  + {key}: {form_val(node['value'], depth + 1)}")
+        elif node_type == 'removed':
+            lines.append(f"{indent}  - {key}: {form_val(node['value'], depth + 1)}")
+        else:
+            lines.append(f"{indent}    {key}: {form_val(node['value'], depth + 1)}")
+    
+    return '{\n' + '\n'.join(lines) + '\n' + indent + '}'
