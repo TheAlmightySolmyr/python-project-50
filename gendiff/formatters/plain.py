@@ -35,7 +35,7 @@ def frm_v(value):
         return str(value).lower()
     elif value is None:
         return 'null'
-    elif isinstance(value,dict):
+    elif isinstance(value, dict):
         return '[complex value]'
     elif isinstance(value, str):
         return f"'{value}'"
