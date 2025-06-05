@@ -9,23 +9,23 @@ def format_plain(diff_tree, path=""):
     lines = []
 
     for node in diff_tree:
-        current_path = f"{path}.{node.key}" if path else node.key
+        cur_pth = f"{path}.{node.key}" if path else node.key
 
         if node.type == 'added':
             if isinstance(node.value, dict):
-                lines.append(f"{P} '{current_path}' {ADDED} {CV}")
+                lines.append(f"{P} '{cur_pth}' {ADDED} {CV}")
             else:
-                lines.append(f"{P} '{current_path}' {ADDED} {frm_v(node.value)}")
+                lines.append(f"{P} '{cur_pth}' {ADDED} {frm_v(node.value)}")
         elif node.type == 'removed':
-            lines.append(f"{P} '{current_path}' was removed")
+            lines.append(f"{P} '{cur_pth}' was removed")
         elif node.type == 'changed':
             old_val = frm_v(node.value[0])
             new_val = frm_v(node.value[1])
             lines.append(
-                f"Property '{current_path}' was updated. From {old_val} to {new_val}"
+                f"Property '{cur_pth}' was updated. From {old_val} to {new_val}"
             )
         elif node.type == 'nested':
-            lines.append(format_plain(node.children, current_path))
+            lines.append(format_plain(node.children, cur_pth))
 
     return '\n'.join(lines)
 

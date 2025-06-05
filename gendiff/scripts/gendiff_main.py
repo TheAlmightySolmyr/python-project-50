@@ -3,7 +3,7 @@ import argparse
 from gendiff.diff_tree_builder import build_diff_tree
 from gendiff.formatters.form_json import format_json
 from gendiff.formatters.plain import format_plain
-from gendiff.formatters.stylish import format_stylish
+from gendiff.formatters.stylish import form_sty
 from gendiff.parsers import parse_file_type
 
 DESCRIPTION = 'Compares two configuration files and shows a difference.'
@@ -16,7 +16,7 @@ def generate_diff(file1, file2, format_name='stylish'):
     diff_tree = build_diff_tree(data1, data2)
 
     if format_name == 'stylish':
-        return format_stylish(diff_tree)
+        return form_sty(diff_tree)
     elif format_name == 'plain':
         return format_plain(diff_tree)
     elif format_name == 'json':
