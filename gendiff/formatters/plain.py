@@ -19,11 +19,11 @@ def format_plain(diff_tree, path=""):
         elif node.type == 'removed':
             lines.append(f"{P} '{current_path}' was removed")
         elif node.type == 'changed':
-            old_val, new_val = node.value
-            if isinstance(old_val, dict) or isinstance(new_val, dict):
-                lines.append(f"{P} '{current_path}' {FROM} {CV}{T}{CV}")
-            else:
-                lines.append(f"{P} '{current_path}' {FROM} {frm_v(old_val)}{T}{frm_v(new_val)}")
+            old_val = frm_v(node.value[0])
+            new_val = frm_v(node.value[1])
+            lines.append(
+                f"Property '{current_path}' was updated. From {old_val} to {new_val}"
+            )
         elif node.type == 'nested':
             lines.append(format_plain(node.children, current_path))
 
