@@ -2,7 +2,7 @@ from gendiff.diff_node import DiffNode
 
 
 def build_diff_tree(data1, data2):
-    keys = sorted(set(data1.keys()).union(set(data2.keys())))
+    keys = sorted(data1.keys() | data2.keys())
     diff_tree = []
 
     for key in keys:

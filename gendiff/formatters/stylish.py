@@ -9,8 +9,6 @@ def form_val(value, depth):
         return str(value).lower()
     elif value is None:
         return 'null'
-    elif isinstance(value, str):
-        return f"'{value}'"
     else:
         return str(value)
 
