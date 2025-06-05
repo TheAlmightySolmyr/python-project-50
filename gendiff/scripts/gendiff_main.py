@@ -36,11 +36,8 @@ def main():
         default='stylish'
     )
     args = parser.parse_args()
-    try:
-        diff = generate_diff(args.first_file, args.second_file, args.format)
-        print(diff)
-    except Exception as e:
-        print(f"Error: {e}")
+    diff = generate_diff(args.first_file, args.second_file, args.format)
+    print(diff)
 
 
 if __name__ == '__main__':
