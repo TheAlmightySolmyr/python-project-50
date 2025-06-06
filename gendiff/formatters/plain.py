@@ -2,6 +2,7 @@ REM_TEMPL = "Property '{}' was removed"
 UPD_TEMPL = "Property '{}' was updated. From {} to {}"
 ADD_TEMPL = "Property '{}' was added with value: {}"
 
+
 def format_plain(diff_tree, path=""):
     lines = []
 
