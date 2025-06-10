@@ -12,3 +12,6 @@ lint_fix:
 
 build:
 	uv build
+
+test_cov:
+	uv run pytest -vv

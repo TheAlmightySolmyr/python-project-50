@@ -1,3 +1,11 @@
+from gendiff.diff_node import (
+    AddedNode,
+    ChangedNode,
+    NestedNode,
+    RemovedNode,
+)
+
+
 def form_val(value, depth):
     if isinstance(value, dict):
         indent = '    ' * (depth + 1)
@@ -19,18 +27,17 @@ def form_sty(diff_tree, dpth=0):
     
     for n in diff_tree:
         key = n.key
-        node_type = n.type
         
-        if node_type == 'nested':
+        if isinstance(n, NestedNode):
             lines.append(f"{indent}    {key}: {form_sty(n.children, dpth + 1)}")
-        elif node_type == 'changed':
-            old_val = form_val(n.value[0], dpth + 1)
-            new_val = form_val(n.value[1], dpth + 1)
+        elif isinstance(n, ChangedNode):
+            old_val = form_val(n.old_value, dpth + 1)
+            new_val = form_val(n.new_value, dpth + 1)
             lines.append(f"{indent}  - {key}: {old_val}")
             lines.append(f"{indent}  + {key}: {new_val}")
-        elif node_type == 'added':
+        elif isinstance(n, AddedNode):
             lines.append(f"{indent}  + {key}: {form_val(n.value, dpth + 1)}")
-        elif node_type == 'removed':
+        elif isinstance(n, RemovedNode):
             lines.append(f"{indent}  - {key}: {form_val(n.value, dpth + 1)}")
         else:
             lines.append(f"{indent}    {key}: {form_val(n.value, dpth + 1)}")
