@@ -21,8 +21,6 @@ def generate_diff(file1, file2, format_name='stylish'):
         return format_plain(diff_tree)
     elif format_name == 'json':
         return format_json(diff_tree)
-    else:
-        raise ValueError(f"Unsupported file format: {format_name}")
 
 
 def main():
