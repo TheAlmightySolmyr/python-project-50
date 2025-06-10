@@ -1,37 +1,72 @@
 from pathlib import Path
 
+import pytest
+
 from gendiff.scripts.gendiff_main import generate_diff
 
 
-def test_gendiff():
-    test_data_dir = Path(__file__).parent / 'test_data'
-    ff1_yaml = test_data_dir / 'ff1_yaml.yml'
-    ff2_yaml = test_data_dir / 'ff2_yaml.yml'
-    ff1_json = test_data_dir / 'ff1.json'
-    ff2_json = test_data_dir / 'ff2.json'
-    expected_diff = (test_data_dir / 'expected_diff.txt').read_text()
-    assert generate_diff(ff1_yaml, ff2_yaml) == expected_diff
-    assert generate_diff(ff1_json, ff2_json) == expected_diff
+@pytest.fixture
+def expected_diff():
+    expected = Path(__file__).parent / 'test_data' / 'expected_diff.txt'
+    return expected
 
 
-def test_gendiff_plain():
-    test_data_dir = Path(__file__).parent / 'test_data'
-    ff1_yaml = test_data_dir / 'ff1_yaml.yml'
-    ff2_yaml = test_data_dir / 'ff2_yaml.yml'
-    ff1_json = test_data_dir / 'ff1.json'
-    ff2_json = test_data_dir / 'ff2.json'
-    expected_diff = (test_data_dir / 'expected_diff_plain.txt').read_text()
-    assert generate_diff(ff1_yaml, ff2_yaml, 'plain') == expected_diff
-    assert generate_diff(ff1_json, ff2_json, 'plain') == expected_diff
+@pytest.fixture
+def expected_plain():
+    expected = Path(__file__).parent / 'test_data' / 'expected_diff_plain.txt'
+    return expected
 
 
-def test_gendiff_json():
-    test_data_dir = Path(__file__).parent / 'test_data'
-    ff1_yaml = test_data_dir / 'ff1_yaml.yml'
-    ff2_yaml = test_data_dir / 'ff2_yaml.yml'
-    ff1_json = test_data_dir / 'ff1.json'
-    ff2_json = test_data_dir / 'ff2.json'
-    expected_diff = (test_data_dir / 'expected_diff_json.json').read_text()
+@pytest.fixture
+def expected_json():
+    expected = Path(__file__).parent / 'test_data' / 'expected_diff_json.json'
+    return expected
 
-    assert generate_diff(ff1_yaml, ff2_yaml, 'json') == expected_diff
-    assert generate_diff(ff1_json, ff2_json, 'json') == expected_diff
+
+@pytest.fixture
+def testing_file_json():
+    first = Path(__file__).parent / 'test_data' / 'ff1.json'
+    second = Path(__file__).parent / 'test_data' / 'ff2.json'
+    return first, second
+
+
+@pytest.fixture
+def testing_file_yaml():
+    first = Path(__file__).parent / 'test_data' / 'ff1_yaml.yml'
+    second = Path(__file__).parent / 'test_data' / 'ff2_yaml.yml'
+    return first, second
+
+
+def test_gendiff(expected_diff, testing_file_json, testing_file_yaml):
+    testing_file_yml1, testing_file_yml2 = testing_file_yaml
+    testing_file_json1, testing_file_json2 = testing_file_json
+    assert generate_diff(
+        testing_file_yml1, testing_file_yml2
+        ) == expected_diff.read_text()
+    assert generate_diff(
+        testing_file_json1, testing_file_json2
+        ) == expected_diff.read_text()
+
+
+def test_gendiff_plain(expected_plain, testing_file_json, testing_file_yaml):
+    testing_file_yml1, testing_file_yml2 = testing_file_yaml
+    testing_file_json1, testing_file_json2 = testing_file_json
+    assert generate_diff(
+        testing_file_yml1, testing_file_yml2, 'plain'
+        ) == expected_plain.read_text()
+    assert generate_diff(
+        testing_file_json1, testing_file_json2, 'plain'
+        ) == expected_plain.read_text()
+
+
+def test_gendiff_json(expected_json, testing_file_json, testing_file_yaml):
+    testing_file_yml1, testing_file_yml2 = testing_file_yaml
+    testing_file_json1, testing_file_json2 = testing_file_json
+
+    assert generate_diff(
+        testing_file_yml1, testing_file_yml2, 'json'
+    ) == expected_json.read_text()
+    
+    assert generate_diff(
+        testing_file_json1, testing_file_json2, 'json'
+    ) == expected_json.read_text()
