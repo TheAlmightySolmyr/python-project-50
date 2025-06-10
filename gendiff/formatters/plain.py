@@ -10,12 +10,12 @@ def format_plain(diff_tree, path=""):
         cur_pth = f"{path}.{node.key}" if path else node.key
 
         if node.type == 'added':
-            lines.append(ADD_TEMPL.format(cur_pth, frm_v(node.value)))
+            lines.append(ADD_TEMPL.format(cur_pth, format_value(node.value)))
         elif node.type == 'removed':
             lines.append(REM_TEMPL.format(cur_pth))
         elif node.type == 'changed':
-            old_val = frm_v(node.value[0])
-            new_val = frm_v(node.value[1])
+            old_val = format_value(node.value[0])
+            new_val = format_value(node.value[1])
             lines.append(UPD_TEMPL.format(cur_pth, old_val, new_val))
         elif node.type == 'nested':
             lines.append(format_plain(node.children, cur_pth))
@@ -23,7 +23,7 @@ def format_plain(diff_tree, path=""):
     return '\n'.join(lines)
 
 
-def frm_v(value):
+def format_value(value):
     if isinstance(value, bool):
         return str(value).lower()
     elif value is None:
