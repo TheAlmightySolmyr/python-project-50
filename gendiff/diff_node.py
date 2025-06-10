@@ -57,16 +57,8 @@ class NestedNode:
         self.key = key
         
     def to_dict(self):
-        if isinstance(self.children, list):
-            return {
-                "type": "nested",
-                "key": self.key,
-                "children": [child.to_dict() for child in self.children]
-            }
-        elif isinstance(self.children, dict):
-            return {
-                "type": "nested",
-                "key": self.key,
-                "children": {key: child.to_dict() 
-                           for key, child in self.children.items()}
-            }
+        return {
+            "type": "nested",
+            "key": self.key,
+            "children": [child.to_dict() for child in self.children]
+        }
