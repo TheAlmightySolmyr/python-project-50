@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from gendiff.scripts.gendiff_main import generate_diff
+from gendiff.gendiff_body import generate_diff
 
 
 @pytest.fixture
